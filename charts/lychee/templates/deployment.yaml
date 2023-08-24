@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+{{- if .Values.deployment.annotations }}
+  annotations:
+{{ toYaml .Values.deployment.annotations | indent 4 }}
+{{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  replicas: 1
+  strategy: {{ .Values.deployment.strategy }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.deployment.image }}:{{ default .Chart.AppVersion .Values.deployment.tag }}
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        volumeMounts:
+        - name: uploads
+          mountPath: /uploads
+        ports:
+        - containerPort: 80
+          name: http
+        env:
+        - name: TIMEZONE
+          value: {{ .Values.timezone }}
+        - name: PHP_TZ
+          value: {{ .Values.timezone }}
+        - name: DB_CONNECTION
+          value: {{ .Values.db.connection }}
+        - name: DB_HOST
+          value: {{ .Values.db.host }}
+        - name: DB_PORT
+          value: {{ .Values.db.port }}
+        - name: DB_DATABASE
+          value: {{ .Values.db.database }}
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Chart.Name }}
+              key: dbUsername
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Chart.Name }}
+              key: dbPassword
+        - name: ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Chart.Name }}
+              key: adminUser
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Chart.Name }}
+              key: adminPassword
+      volumes:
+      - name: uploads
+        persistentVolumeClaim:
+          claimName: {{ .Chart.Name }}-uploads
