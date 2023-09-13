@@ -13,7 +13,8 @@ spec:
     matchLabels:
       app: {{ .Chart.Name }}
   replicas: 1
-  strategy: {{ .Values.deployment.strategy }}
+  strategy:
+    type: {{ .Values.deployment.strategy }}
   template:
     metadata:
       labels:
