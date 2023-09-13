@@ -20,6 +20,8 @@ db:
   host:
   port:
 
+additionalEnvs: []
+
 secretRefs:
 - name: DB_DATABASE
   key: db

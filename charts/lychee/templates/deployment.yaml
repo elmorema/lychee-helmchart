@@ -45,6 +45,10 @@ spec:
             secretKeyRef:
               name: {{ .Chart.Name }}
               key: adminPassword
+        {{- range .Values.additionalEnvs }}
+        - name: {{ .name }}
+          value: {{ .value | quote }}
+        {{- end }}
         - name: DB_CONNECTION
           value: {{ .Values.db.connection }}
         - name: DB_HOST
