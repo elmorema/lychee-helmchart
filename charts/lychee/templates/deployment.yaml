@@ -50,7 +50,7 @@ spec:
         - name: DB_HOST
           value: {{ .Values.db.host }}
         - name: DB_PORT
-          value: {{ .Values.db.port }}
+          value: {{ .Values.db.port | quote }}
         {{- range .Values.secretRefs }}
         - name: {{ .name }}
           valueFrom:
