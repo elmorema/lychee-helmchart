@@ -31,6 +31,8 @@ spec:
         - containerPort: 80
           name: http
         env:
+        - name: APP_URL
+          value: https://{{ .Values.host }}
         - name: TIMEZONE
           value: {{ .Values.timezone }}
         - name: PHP_TZ
