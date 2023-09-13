@@ -17,8 +17,17 @@ admin:
 
 db:
   connection: postgres
-  database: lychee
   host:
   port:
-  username:
-  password:
+
+secretRefs:
+- name: DB_DATABASE
+  key: db
+  secretName: db-credentials
+- name: DB_USERNAME
+  key: user
+  secretName: db-credentials
+- name: DB_PASSWORD
+  key: password
+  secretName: db-credentials
+

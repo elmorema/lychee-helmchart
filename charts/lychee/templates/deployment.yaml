@@ -34,24 +34,6 @@ spec:
           value: {{ .Values.timezone }}
         - name: PHP_TZ
           value: {{ .Values.timezone }}
-        - name: DB_CONNECTION
-          value: {{ .Values.db.connection }}
-        - name: DB_HOST
-          value: {{ .Values.db.host }}
-        - name: DB_PORT
-          value: {{ .Values.db.port }}
-        - name: DB_DATABASE
-          value: {{ .Values.db.database }}
-        - name: DB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Chart.Name }}
-              key: dbUsername
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Chart.Name }}
-              key: dbPassword
         - name: ADMIN_USER
           valueFrom:
             secretKeyRef:
@@ -62,6 +44,19 @@ spec:
             secretKeyRef:
               name: {{ .Chart.Name }}
               key: adminPassword
+        - name: DB_CONNECTION
+          value: {{ .Values.db.connection }}
+        - name: DB_HOST
+          value: {{ .Values.db.host }}
+        - name: DB_PORT
+          value: {{ .Values.db.port }}
+        {{- range .Values.secretRefs }}
+        - name: {{ .name }}
+          valueFrom:
+            secretKeyRef:
+              key: {{ .key }}
+              name: {{ .secretName }}
+        {{- end }}
       volumes:
       - name: uploads
         persistentVolumeClaim:
