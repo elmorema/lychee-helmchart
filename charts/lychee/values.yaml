@@ -19,7 +19,7 @@ uploads:
   size: 100Gi
   storageClass: longhorn
 
-database:
+conf:
   size: 5Gi
   storageClass: longhorn
 

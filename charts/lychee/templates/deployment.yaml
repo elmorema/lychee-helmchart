@@ -27,10 +27,8 @@ spec:
         volumeMounts:
         - name: uploads
           mountPath: /uploads
-{{- if eq "sqlite" .Values.dbConnection }}
-        - name: database
-          mountPath: /database
-{{- end }}
+        - name: conf
+          mountPath: /conf
         ports:
         - containerPort: 80
           name: http
@@ -45,10 +43,6 @@ spec:
           value: {{ .Values.timezone }}
         - name: DB_CONNECTION
           value: {{ .Values.dbConnection }}
-{{- if eq "sqlite" .Values.dbConnection }}
-        - name: DB_DATABASE
-          value: /database/database.sqlite
-{{- end }}
         - name: ADMIN_USER
           valueFrom:
             secretKeyRef:
@@ -74,8 +68,6 @@ spec:
       - name: uploads
         persistentVolumeClaim:
           claimName: {{ .Chart.Name }}-uploads
-{{- if eq "sqlite" .Values.dbConnection }}
-      - name: database
+      - name: conf
         persistentVolumeClaim:
-          claimName: {{ .Chart.Name }}-database
-{{- end }}
+          claimName: {{ .Chart.Name }}-conf
