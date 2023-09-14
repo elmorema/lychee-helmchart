@@ -27,16 +27,28 @@ spec:
         volumeMounts:
         - name: uploads
           mountPath: /uploads
+{{- if eq "sqlite" .Values.dbConnection }}
+        - name: database
+          mountPath: /database
+{{- end }}
         ports:
         - containerPort: 80
           name: http
         env:
+        - name: APP_NAME
+          value: {{ .Values.appName }}
         - name: APP_URL
           value: https://{{ .Values.host }}
         - name: TIMEZONE
           value: {{ .Values.timezone }}
         - name: PHP_TZ
           value: {{ .Values.timezone }}
+        - name: DB_CONNECTION
+          value: {{ .Values.dbConnection }}
+{{- if eq "sqlite" .Values.dbConnection }}
+        - name: DB_DATABASE
+          value: /database/database.sqlite
+{{- end }}
         - name: ADMIN_USER
           valueFrom:
             secretKeyRef:
@@ -51,12 +63,6 @@ spec:
         - name: {{ .name }}
           value: {{ .value | quote }}
         {{- end }}
-        - name: DB_CONNECTION
-          value: {{ .Values.db.connection }}
-        - name: DB_HOST
-          value: {{ .Values.db.host }}
-        - name: DB_PORT
-          value: {{ .Values.db.port | quote }}
         {{- range .Values.secretRefs }}
         - name: {{ .name }}
           valueFrom:
@@ -68,3 +74,8 @@ spec:
       - name: uploads
         persistentVolumeClaim:
           claimName: {{ .Chart.Name }}-uploads
+{{- if eq "sqlite" .Values.dbConnection }}
+      - name: database
+        persistentVolumeClaim:
+          claimName: {{ .Chart.Name }}-database
+{{- end }}

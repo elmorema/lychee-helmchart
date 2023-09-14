@@ -1,3 +1,13 @@
+appName: lychee
+timezone: Europe/Berlin
+dbConnection: sqlite
+host: lychee.example.com
+
+ingress:
+  className: traefik
+  #annotations:
+    #cert-manager.io/cluster-issuer: letsencrypt
+
 deployment:
   imagePullPolicy: IfNotPresent
   image: lycheeorg/lychee
@@ -5,31 +15,17 @@ deployment:
   annotations:
   tag:
 
-sizeUploadPVC: 100Gi
-storageclass: longhorn
-timezone: Europe/Berlin
-ingressClassName: traefik
-host: lychee.example.com
+uploads:
+  size: 100Gi
+  storageClass: longhorn
+
+database:
+  size: 5Gi
+  storageClass: longhorn
 
 admin:
   username: admin
   password: admin
 
-db:
-  connection: postgres
-  host:
-  port:
-
 additionalEnvs: []
-
-secretRefs:
-- name: DB_DATABASE
-  key: db
-  secretName: db-credentials
-- name: DB_USERNAME
-  key: user
-  secretName: db-credentials
-- name: DB_PASSWORD
-  key: password
-  secretName: db-credentials
-
+secretRefs: []

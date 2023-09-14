@@ -9,5 +9,5 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.sizeUploadPVC }}
-  storageClassName: {{ .Values.storageclass }}
+      storage: {{ .Values.uploads.size }}
+  storageClassName: {{ .Values.uploads.storageClass }}
