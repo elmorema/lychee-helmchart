@@ -4,10 +4,10 @@ kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
   namespace: {{ .Release.Namespace }}
-{{- if .Values.deployment.annotations }}
+  {{- if .Values.deployment.annotations }}
   annotations:
-{{ toYaml .Values.deployment.annotations | indent 4 }}
-{{- end }}
+    {{ toYaml .Values.deployment.annotations }}
+  {{- end }}
 spec:
   selector:
     matchLabels:
@@ -32,6 +32,10 @@ spec:
         ports:
         - containerPort: 80
           name: http
+        {{- if .Values.deployment.nodeSelector }}
+        nodeSelector:
+          {{ toYaml .Values.deployment.nodeSelector }}
+        {{- end }}
         env:
         - name: APP_NAME
           value: {{ .Values.appName }}

@@ -13,6 +13,7 @@ deployment:
   image: lycheeorg/lychee
   strategy: Recreate
   annotations:
+  nodeSelector:
   tag:
 
 uploads:
