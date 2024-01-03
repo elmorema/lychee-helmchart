@@ -1,5 +1,5 @@
 appName: lychee
-timezone: Europe/Berlin
+timezone: America/New_York
 dbConnection: sqlite
 host: lychee.example.com
 
@@ -17,7 +17,7 @@ deployment:
   tag:
 
 uploads:
-  size: 100Gi
+  size: 1500Gi
   storageClass: longhorn
 
 conf:
@@ -25,8 +25,8 @@ conf:
   storageClass: longhorn
 
 admin:
-  username: admin
-  password: admin
+  username: markiemark
+  password: w#ikNRip7WqeQeTq1p
 
 additionalEnvs: []
 secretRefs: []
