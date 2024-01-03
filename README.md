@@ -9,7 +9,7 @@
 
 ```bash
 kubectl create namespace lychee
-helm repo add lychee https://breuerfelix.github.io/lychee-helmchart
+helm repo add lychee https://elmorema.github.io/lychee-helmchart
 helm repo update
 helm install lychee lychee/lychee -n lychee
 ```
